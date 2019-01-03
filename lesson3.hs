@@ -11,11 +11,13 @@ body sumSquare squareSum = if sumSquare > squareSum
 sumSquareOrSquareSu2 x y = body (x^2 + y^2) ((x+y)^2)
 
 bod2 a b = (\sumSquare squareSum ->
-         if sumSquare > squareSum
-         then sumSquare
-         else squareSum) a b
+            if sumSquare > squareSum
+            then sumSquare
+            else squareSum) a b
 
-sumSquareOrSquareSu3 x y = (\sumSquare squareSum ->
+sumSquareOrSquareSu3 x y = bod2 (x^2 + y^2) ((x+y)^2)
+
+sumSquareOrSquareSu4 x y = (\sumSquare squareSum ->
                              if sumSquare > squareSum
                              then sumSquare
                              else squareSum) (x^2 + y^2) ((x+y)^2)
@@ -25,7 +27,7 @@ doubleDouble x = dubs*2
 
 doubleDoubl2 x = (\dubs -> dubs * 2) x*2
 
-sumSquareOrSquareSu4 x y = let sumSquare = (x^2 + y^2)
+sumSquareOrSquareSu5 x y = let sumSquare = (x^2 + y^2)
                                squareSum = (x+y)^2
                            in
                             if sumSquare > squareSum
