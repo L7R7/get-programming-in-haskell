@@ -35,7 +35,7 @@ data Creator
   | ArtistCreator Artist
   deriving (Show)
 
-data Author =
+newtype Author =
   Author Name
   deriving (Show)
 

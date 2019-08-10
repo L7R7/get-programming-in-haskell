@@ -2,15 +2,19 @@ h = head [1, 2, 3]
 
 t = tail [1, 2, 3]
 
-a = 1 : []
+-- a = 1 : []
+a = [1]
 
-xs = 1 : 2 : 3 : 4 : []
+-- xs = 1 : 2 : 3 : 4 : []
+xs = [1, 2, 3, 4]
 
-ys = (1, 2) : (3, 4) : (5, 6) : []
+-- ys = (1, 2) : (3, 4) : (5, 6) : []
+ys = [(1, 2), (3, 4), (5, 6)]
 
 zs = 1 : [2, 3, 4]
 
-b = [1] ++ [2, 3, 4]
+-- b = [1] ++ [2, 3, 4]
+b = 1 : [2, 3, 4]
 
 range = [1,3 .. 10]
 
@@ -28,5 +32,5 @@ subseq start end list = take difference (drop start list)
 
 inFirstHalf val list = elem val firstHalf
   where
-    midpoint = (length list) `div` 2
+    midpoint = length list `div` 2
     firstHalf = take midpoint list

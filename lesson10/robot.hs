@@ -1,4 +1,4 @@
-robot (name, attack, hp) = \message -> message (name, attack, hp)
+robot (name, attack, hp) message = message (name, attack, hp)
 
 killerRobot = robot ("Kill3r", 25, 200)
 
@@ -26,7 +26,7 @@ setAttack aRobot newAttack = aRobot (\(n, _, h) -> robot (n, newAttack, h)) -- w
 setHP aRobot newHP = aRobot (\(n, a, h) -> robot (n, a, newHP))
 
 printRobot aRobot =
-  aRobot (\(n, a, h) -> n ++ " attack:" ++ (show a) ++ " hp:" ++ (show h))
+  aRobot (\(n, a, h) -> n ++ " attack:" ++ show a ++ " hp:" ++ show h)
 
 damage aRobot attackDamage =
   aRobot (\(n, a, h) -> robot (n, a, h - attackDamage))

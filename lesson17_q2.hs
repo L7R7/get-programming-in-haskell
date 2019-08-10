@@ -2,11 +2,12 @@ cartCombine :: (a -> b -> c) -> [a] -> [b] -> [c]
 cartCombine func l1 l2 = zipWith func newL1 cycledL2
   where
     nToAdd = length l2
-    repeatedL1 = map (take nToAdd . repeat) l1
+    repeatedL1 = map (replicate nToAdd) l1
+    -- repeatedL1 = map (take nToAdd . repeat) l1
     newL1 = mconcat repeatedL1
     cycledL2 = cycle l2
 
-data Events =
+newtype Events =
   Events [String]
   deriving (Show)
 
@@ -14,15 +15,15 @@ instance Semigroup Events where
   (<>) = combineEvents
 
 instance Monoid Events where
-  mempty = Events ([])
+  mempty = Events []
 
 combineEvents :: Events -> Events -> Events
-combineEvents (Events e1) (Events e2) = Events (combined)
+combineEvents (Events e1) (Events e2) = Events combined
   where
     combined = cartCombine combiner e1 e2
-    combiner = (\x y -> mconcat [x, "-", y])
+    combiner x y = mconcat [x, "-", y]
 
-data Probs =
+newtype Probs =
   Probs [Double]
   deriving (Show)
 
@@ -30,10 +31,10 @@ instance Semigroup Probs where
   (<>) = combineProbs
 
 instance Monoid Probs where
-  mempty = Probs ([])
+  mempty = Probs []
 
 combineProbs :: Probs -> Probs -> Probs
-combineProbs (Probs p1) (Probs p2) = Probs (combined)
+combineProbs (Probs p1) (Probs p2) = Probs combined
   where
     combined = cartCombine (*) p1 p2
 
@@ -47,12 +48,13 @@ createPTable events probs = PTable events normalizedProbs
     normalizedProbs = normalizeProbs probs totalProbs
 
 sumProbs :: Probs -> Double
-sumProbs (Probs (ps)) = sum ps
+sumProbs (Probs ps) = sum ps
 
 normalizeProbs :: Probs -> Double -> Probs
-normalizeProbs (Probs (ps)) totalProbs = Probs (normalized)
+normalizeProbs (Probs ps) totalProbs = Probs normalized
   where
-    normalized = map (\x -> x / totalProbs) ps
+    normalized = map (/ totalProbs) ps
+    -- normalized = map (\x -> x / totalProbs) ps
 
 instance Show PTable where
   show (PTable (Events e) (Probs p)) = mconcat pairs

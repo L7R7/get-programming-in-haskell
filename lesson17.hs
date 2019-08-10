@@ -11,14 +11,17 @@ myMax :: Ord a => [a] -> a
 myMax = myLast . sort
 
 myAll :: (a -> Bool) -> [a] -> Bool
-myAll testFunc = (foldr (&&) True) . (map testFunc)
+-- myAll testFunc = (foldr (&&) True) . (map testFunc)
+myAll testFunc = foldr ((&&) . testFunc) True
 
 myAny :: (a -> Bool) -> [a] -> Bool
-myAny testFunc = (foldr (||) False) . (map testFunc)
+-- myAny testFunc = (foldr (||) False) . (map testFunc)
+myAny testFunc = foldr ((||) . testFunc) False
 
 instance Semigroup Integer where
-  (<>) x y = x + y
+  (<>) = (+)
 
+--  (<>) x y = x + y
 data Color
   = Red
   | Yellow
@@ -66,7 +69,7 @@ createPTable :: Events -> Probs -> PTable
 createPTable events probs = PTable events normalizedProbs
   where
     totalProbs = sum probs
-    normalizedProbs = map (\x -> x / totalProbs) probs
+    normalizedProbs = map (/ totalProbs) probs
 
 showPair :: String -> Double -> String
 showPair event prob = mconcat [event, "|", show prob, "\n"]
@@ -80,17 +83,17 @@ cartCombine :: (a -> b -> c) -> [a] -> [b] -> [c]
 cartCombine func l1 l2 = zipWith func newL1 cycledL2
   where
     nToAdd = length l2
-    repeatedL1 = map (take nToAdd . repeat) l1
+    repeatedL1 = map (replicate nToAdd) l1
     newL1 = mconcat repeatedL1
     cycledL2 = cycle l2
 
 combineEvents :: Events -> Events -> Events
 combineEvents e1 e2 = cartCombine combiner e1 e1
   where
-    combiner = (\x y -> mconcat [x, "-", y])
+    combiner x y = mconcat [x, "-", y]
 
 combineProbs :: Probs -> Probs -> Probs
-combineProbs p1 p2 = cartCombine (*) p1 p2
+combineProbs = cartCombine (*)
 
 instance Semigroup PTable where
   (<>) ptable1 (PTable [] []) = ptable1

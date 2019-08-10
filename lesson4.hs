@@ -26,15 +26,15 @@ double n = n * 2
 
 square n = n ^ 2
 
-ifEvenIn2 n = ifEven inc n
+ifEvenIn2 = ifEven inc
 
-ifEvenDoubl2 n = ifEven double n
+ifEvenDoubl2 = ifEven double n
 
-ifEvenSquar2 n = ifEven square n
+ifEvenSquar2 = ifEven square n
 
-ifEvenCube n = ifEven (\x -> x ^ 3) n
+ifEvenCube = ifEven (^ 3)
 
-ifEvenNegate n = ifEven (\x -> -x) n
+ifEvenNegate = ifEven (\x -> -x)
 
 names =
   [ ("Ian", "Curtis")
@@ -45,12 +45,19 @@ names =
 
 sortedByFirstName = sort names
 
-compareLastNames name1 name2 =
-  if lastName1 > lastName2
-    then GT
-    else if lastName1 < lastName2
-           then LT
-           else EQ
+-- compareLastNames name1 name2 =
+--   if lastName1 > lastName2
+--     then GT
+--     else if lastName1 < lastName2
+--            then LT
+--            else EQ
+--   where
+--     lastName1 = snd name1
+--     lastName2 = snd name2
+compareLastNames name1 name2
+  | lastName1 > lastName2 = GT
+  | lastName1 < lastName2 = LT
+  | otherwise = EQ
   where
     lastName1 = snd name1
     lastName2 = snd name2
@@ -59,16 +66,27 @@ compareLastName2 name1 name2 = compare (snd name1) (snd name2)
 
 sortedByLastName = sortBy compareLastNames names
 
-compareNames name1 name2 =
-  if lastName1 > lastName2
-    then GT
-    else if lastName1 < lastName2
-           then LT
-           else if firstName1 > firstName2
-                  then GT
-                  else if firstName1 < firstName2
-                         then LT
-                         else EQ
+-- compareNamess name1 name2 =
+--   if lastName1 > lastName2
+--     then GT
+--     else if lastName1 < lastName2
+--            then LT
+--            else if firstName1 > firstName2
+--                   then GT
+--                   else if firstName1 < firstName2
+--                          then LT
+--                          else EQ
+--   where
+--     firstName1 = fst name1
+--     lastName1 = snd name1
+--     firstName2 = fst name2
+--     lastName2 = snd name2
+compareNames name1 name2
+  | lastName1 > lastName2 = GT
+  | lastName1 < lastName2 = LT
+  | firstName1 > firstName2 = GT
+  | firstName1 < firstName2 = LT
+  | otherwise = EQ
   where
     firstName1 = fst name1
     lastName1 = snd name1
@@ -87,8 +105,9 @@ compareName2 name1 name2 =
     lastNameComparison = compare firstName1 firstName2
 
 addressLetter name location = nameText ++ " - " ++ location
+    -- nameText = (fst name) ++ " " ++ (snd name)
   where
-    nameText = (fst name) ++ " " ++ (snd name)
+    nameText = fst name ++ " " ++ snd name
 
 bobsAddress =
   addressLetter ("Bob", "Smith") "PO Box 1234 - San Francisco, CA, 94111"
@@ -99,11 +118,11 @@ sfOffice name =
     else nameText ++ " - PO Box 1010 - San Francisco, CA, 94109"
   where
     lastName = snd name
-    nameText = (fst name) ++ " " ++ lastName
+    nameText = fst name ++ " " ++ lastName
 
 nyOffice name = nameText ++ ": PO Box 789 - New York, NY, 10013"
   where
-    nameText = (fst name) ++ " " ++ (snd name)
+    nameText = fst name ++ " " ++ snd name
 
 renoOffice name = nameText ++ " - PO Box 456 - Reno, NV 89523"
   where
@@ -111,7 +130,7 @@ renoOffice name = nameText ++ " - PO Box 456 - Reno, NV 89523"
 
 dcOffice name = nameText ++ " Esq"
   where
-    nameText = (fst name) ++ " " ++ (snd name)
+    nameText = fst name ++ " " ++ snd name
 
 getLocationFunction location =
   case location of
@@ -119,7 +138,7 @@ getLocationFunction location =
     "sf" -> sfOffice
     "reno" -> renoOffice
     "dc" -> dcOffice
-    _ -> (\name -> (fst name) ++ " " ++ (snd name))
+    _ -> \name -> fst name ++ " " ++ snd name
 
 addressLette2 name location = locationFunction name
   where

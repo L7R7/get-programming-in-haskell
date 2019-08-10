@@ -19,10 +19,10 @@ values = [1, 2, 3]
 testScores :: [Double]
 testScores = [0.99, 0.7, 0.8]
 
-letters :: [Char]
+letters :: String -- [Char]
 letters = ['a', 'b', 'c']
 
-aPet :: [Char]
+aPet :: String -- [Char]
 aPet = "cat"
 
 anotherPet :: String
@@ -39,7 +39,7 @@ streetAddress = (123, "Happy St.")
 
 half :: Int -> Double
 -- half n = n/2
-half n = (fromIntegral n) / 2
+half n = fromIntegral n / 2
 
 halve :: Int -> Int
 halve n = div n 2

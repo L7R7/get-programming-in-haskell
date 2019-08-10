@@ -16,7 +16,7 @@ largestCharNumber :: Int -- not a function, just a value!
 largestCharNumber = fromEnum (maxBound :: Char)
 
 rotChar :: Char -> Char
-rotChar charToEncrypt = rotN sizeOfAlphabet charToEncrypt
+rotChar = rotN sizeOfAlphabet
   where
     sizeOfAlphabet = 1 + largestCharNumber
 
@@ -24,7 +24,7 @@ message :: [FourLetterAlphabet]
 message = [L1, L3, L4, L1, L1, L2]
 
 fourLetterAlphabetEncoder :: [FourLetterAlphabet] -> [FourLetterAlphabet]
-fourLetterAlphabetEncoder input = map rot4l input
+fourLetterAlphabetEncoder = map rot4l
   where
     alphaSize = 1 + fromEnum (maxBound :: FourLetterAlphabet)
     rot4l = rotN alphaSize
@@ -39,7 +39,7 @@ threeLetterMessage :: [ThreeLetterAlphabet]
 threeLetterMessage = [Alpha, Alpha, Beta, Alpha, Kappa]
 
 threeLetterEncoder :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
-threeLetterEncoder vals = map rot3l vals
+threeLetterEncoder = map rot3l
   where
     alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
     rot3l = rotN alphaSize
@@ -55,38 +55,38 @@ rotNdecoder n c = toEnum rotation
     rotation = offset `mod` n
 
 threeLetterDecoder :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
-threeLetterDecoder vals = map rot3ldecoder vals
+threeLetterDecoder = map rot3ldecoder
   where
     alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
     rot3ldecoder = rotNdecoder alphaSize
 
 rotEncoder :: String -> String
-rotEncoder text = map rotChar text
+rotEncoder = map rotChar
   where
     alphaSize = 1 + fromEnum (maxBound :: Char)
     rotChar = rotN alphaSize
 
 rotDecoder :: String -> String
-rotDecoder text = map rotCharDecoder text
+rotDecoder = map rotCharDecoder
   where
     alphaSize = 1 + fromEnum (maxBound :: Char)
     rotCharDecoder = rotNdecoder alphaSize
 
 threeLetterEncoder2 :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
-threeLetterEncoder2 vals = map rot3l vals
+threeLetterEncoder2 = map rot3l
   where
     alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
     rot3l = rotN alphaSize
 
 threeLetterDecoder2 :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
-threeLetterDecoder2 vals = map rot3ldecoder vals
+threeLetterDecoder2 = map rot3ldecoder
   where
     alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
     rot3ldecoder = rotNdecoder alphaSize
 
 -- TODO: check xor in Data.Bool
 xorBool :: Bool -> Bool -> Bool
-xorBool v1 v2 = (v1 || v2) && (not (v1 && v2))
+xorBool v1 v2 = (v1 || v2) && (not v1 && v2)
 
 xorPair :: (Bool, Bool) -> Bool
 xorPair (v1, v2) = xorBool v1 v2
@@ -107,7 +107,7 @@ intToBits' :: Int -> Bits
 intToBits' 0 = [False]
 intToBits' 1 = [True]
 intToBits' n =
-  if (remainder == 0)
+  if remainder == 0
     then False : intToBits' nextVal
     else True : intToBits' nextVal
   where
@@ -121,14 +121,14 @@ intToBits :: Int -> Bits
 intToBits n = leadingFalses ++ reversedBits
   where
     reversedBits = reverse (intToBits' n)
-    missingBits = maxBits - (length reversedBits)
+    missingBits = maxBits - length reversedBits
     leadingFalses = take missingBits (cycle [False])
 
 charToBits :: Char -> Bits
 charToBits char = intToBits $ fromEnum char
 
 bitsToInt :: Bits -> Int
-bitsToInt bits = sum (map (\x -> 2 ^ (snd x)) trueLocations)
+bitsToInt bits = sum (map (\x -> 2 ^ snd x) trueLocations)
   where
     size = length bits
     indices = [size - 1,size - 2 .. 0]
@@ -145,7 +145,7 @@ myPlainText = "Haskell"
 
 applyOTP' :: String -> String -> [Bits]
 applyOTP' pad plaintext =
-  map (\pair -> (fst pair) `xor` (snd pair)) (zip padBits plaintextBits)
+  map (\pair -> fst pair `xor` snd pair) (zip padBits plaintextBits)
   where
     padBits = map charToBits pad
     plaintextBits = map charToBits plaintext
@@ -166,15 +166,15 @@ data Rot =
   Rot
 
 instance Cipher Rot where
-  encode Rot text = rotEncoder text
-  decode Rot text = rotDecoder text
+  encode Rot = rotEncoder
+  decode Rot = rotDecoder
 
-data OneTimePad =
+newtype OneTimePad =
   OTP String
 
 instance Cipher OneTimePad where
-  encode (OTP pad) text = applyOTP pad text
-  decode (OTP pad) text = applyOTP pad text
+  encode (OTP pad) = applyOTP pad
+  decode (OTP pad) = applyOTP pad
 
 myOTP :: OneTimePad
 myOTP = OTP (cycle [minBound .. maxBound])

@@ -16,10 +16,10 @@ patientInfo :: FirstName -> LastName -> Age -> Height -> String
 type PatientName = (FirstName, LastName)
 
 firstName :: PatientName -> FirstName
-firstName patient = fst patient
+firstName = fst
 
 lastName :: PatientName -> LastName
-lastName patient = snd patient
+lastName = snd
 
 patientInfo2 :: PatientName -> Age -> Height -> String
 patientInfo2 patientName age height = name ++ " " ++ ageHeight

@@ -31,5 +31,4 @@ q23 n =
     then n - 2
     else 3 * n + 1
 
-main = do
-  print "done"
+main = "done"

@@ -29,7 +29,7 @@ collatz n =
 
 myReverse [] = []
 -- myReverse (x:[]) = [x]
-myReverse (x:xs) = (myReverse xs) ++ [x]
+myReverse (x:xs) = myReverse xs ++ [x]
 
 fib 0 = 0
 fib 1 = 1

@@ -1,6 +1,7 @@
+import Data.List.Extra (enumerate)
 import qualified Data.Map as Map
 
-data Box a =
+newtype Box a =
   Box a
   deriving (Show)
 
