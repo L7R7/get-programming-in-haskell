@@ -1,0 +1,63 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 424017282713d179f3554666bd30833ded365a0da7ec1e256ce20a9bf94fd818
+
+name:           primes
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/l7r7/primes#readme>
+homepage:       https://github.com/l7r7/primes#readme
+bug-reports:    https://github.com/l7r7/primes/issues
+author:         Leonhard Riedisser
+maintainer:     leo008180@gmail.com
+copyright:      2019 Leonhard Riedisser
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/l7r7/primes
+
+library
+  exposed-modules:
+      Primes
+  other-modules:
+      Paths_primes
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable primes-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_primes
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , primes
+  default-language: Haskell2010
+
+test-suite primes-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_primes
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , primes
+    , QuickCheck
+  default-language: Haskell2010
