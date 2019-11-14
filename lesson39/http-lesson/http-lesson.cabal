@@ -1,0 +1,66 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: ef170487770e5a816fa58fd710c4d6eaad08d5876a3c81154cc4328ebeb22382
+
+name:           http-lesson
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/l7r7/http-lesson#readme>
+homepage:       https://github.com/l7r7/http-lesson#readme
+bug-reports:    https://github.com/l7r7/http-lesson/issues
+author:         Leonhard Riedisser
+maintainer:     leo008180@gmail.com
+copyright:      2019 Leonhard Riedisser
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/l7r7/http-lesson
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_http_lesson
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable http-lesson-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_http_lesson
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , http-lesson
+    , bytestring
+    , http-conduit
+    , http-types
+  default-language: Haskell2010
+  extensions: OverloadedStrings
+
+test-suite http-lesson-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_http_lesson
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , http-lesson
+  default-language: Haskell2010
