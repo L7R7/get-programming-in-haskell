@@ -1,0 +1,66 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 0de5223f5f211e4b7462b031110b0821488a3074ceed333eb53aaa20ec64bd60
+
+name:           db-lesson-postgres
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/l7r7/db-lesson-postgres#readme>
+homepage:       https://github.com/l7r7/db-lesson-postgres#readme
+bug-reports:    https://github.com/l7r7/db-lesson-postgres/issues
+author:         Leonhard Riedisser
+maintainer:     leo008180@gmail.com
+copyright:      2019 Leonhard Riedisser
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/l7r7/db-lesson-postgres
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_db_lesson
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable db-lesson-postgres-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_db_lesson
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , db-lesson-postgres
+    , time
+    , sqlite-simple
+    , postgresql-simple
+  default-language: Haskell2010
+  extensions: OverloadedStrings
+
+test-suite db-lesson-postgres-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_db_lesson
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , db-lesson-postgres
+  default-language: Haskell2010
