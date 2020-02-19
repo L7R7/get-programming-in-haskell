@@ -1,6 +1,7 @@
 module Main where
 
 import           Control.Applicative
+import           Data.Maybe
 import           Data.Time
 import           Database.SQLite.Simple
 import           Database.SQLite.Simple.FromRow
@@ -93,11 +94,7 @@ printCheckedout = printToolQuery "select * from tools where id in (select tool_i
 selectTool :: Connection -> Int -> IO (Maybe Tool)
 selectTool conn toolId = do
   resp <- query conn "SELECT * FROM tools WHERE id = (?)" (Only toolId) :: IO [Tool]
-  return $ firstOrNothing resp
-
-firstOrNothing :: [a] -> Maybe a
-firstOrNothing []    = Nothing
-firstOrNothing (x:_) = Just x
+  return $ listToMaybe resp
 
 updateTool :: Tool -> Day -> Tool
 updateTool tool date = tool {lastReturned = date, timesBorrowed = 1 + timesBorrowed tool}
@@ -135,15 +132,15 @@ promptAndAddUser = do
 promptAndCheckout :: IO ()
 promptAndCheckout = do
   print "Enter the id of the user"
-  userId <- pure read <*> getLine
+  userId <- read <$> getLine
   print "Enter the id of the tool"
-  toolId <- pure read <*> getLine
+  toolId <- read <$> getLine
   checkout userId toolId
 
 promptAndCheckin :: IO ()
 promptAndCheckin = do
   print "Enter the id of the tool"
-  toolId <- pure read <*> getLine
+  toolId <- read <$> getLine
   checkinAndUpdate toolId
 
 performCommand :: String -> IO ()
